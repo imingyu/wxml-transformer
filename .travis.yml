@@ -1,6 +1,15 @@
 language: node_js
+node_js:
+  - "node"
+cache:
+  directories:
+    - "node_modules"
+before_script:
+  - npm i mocha -g
 install:
   - npm install
+before_script:
+  - npm run build
 branches:
   only:
   - master
