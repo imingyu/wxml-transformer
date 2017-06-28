@@ -1,6 +1,6 @@
 {
     "name": "wxml-transformer",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "将微信小程序的wxml代码转换成js object或html片段",
     "main": "dist/index.js",
     "scripts": {
