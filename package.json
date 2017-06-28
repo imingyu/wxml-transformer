@@ -7,8 +7,12 @@
         "build": "rollup -c rollup.config.js",
         "test": "mocha test/index.js"
     },
-    "author": "mingyuhisoft@163.com",
-    "license": "BSD 2-Clause",
+    "author": {
+        "name": "Mingyu Yuan",
+        "email": "mingyuhisoft@163.com",
+        "url": "https://github.com/imingyu"
+    },
+    "license": "BSD-3-Clause",
     "dependencies": {
         "jsdom": "^11.0.0"
     },
@@ -22,5 +26,9 @@
     "bugs": {
         "url": "https://github.com/imingyu/wxml-transformer/issues"
     },
-    "homepage": "https://github.com/imingyu/wxml-transformer"
+    "homepage": "https://github.com/imingyu/wxml-transformer",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/imingyu/wxml-transformer.git"
+    }
 }
