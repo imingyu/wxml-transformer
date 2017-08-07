@@ -1,6 +1,4 @@
-export const wxmlElements = ["block", "page", "view", "scroll-view", "swiper", "swiper-item", "movable-view", "icon", "text", "progress", "button", "checkbox-group", "checkbox", "form", "input", "label", "picker", "picker-view", "radio-group", "radio", "slider", "switch", "textarea", "navigator", "audio", "image", "video", "map", "canvas", "contact-button"];
-
-export const defaultTransformOptions = {
+export var defaultTransformOptions = {
     mapping: {
         block: 'div',
         page: 'div',

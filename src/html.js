@@ -9,8 +9,12 @@ import { defaultTransformOptions } from './options.js';
 
 var propsStringify = (props) => {
     var html = "";
-    each(props, (value, prop) => {
-        html += ` ${prop}="${value}"`;
+    each(props, prop => {
+        if (prop.onlyName) {
+            html += ` ${prop.name}`;
+        } else {
+            html += ` ${prop.name}="${prop.value}"`;
+        }
     });
     return html;
 }
@@ -55,6 +59,7 @@ export default (wxmlContent, options) => {
     options = extend(true, {}, defaultTransformOptions, options);
     var html = "",
         wxmlObject = toObject(wxmlContent);
+    console.log(JSON.stringify(wxmlObject));
     each(wxmlObject, item => {
         html += elementStringify(item, options);
     });

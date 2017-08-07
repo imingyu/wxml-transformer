@@ -121,21 +121,38 @@ var extend = function extend() {
  * @author imingyu<mingyuhisoft@163.com>
  * @date 2017-6-27
  */
-var JSDOM = require('jsdom').JSDOM;
+var p5 = require('parse5');
 
 var elementToObject = function elementToObject(element) {
     var result;
-    if (element.nodeType != 1) {
-        result = element.nodeValue;
+    if (element.nodeName === '#text') {
+        result = element.value;
     } else {
         result = {
-            props: {},
+            props: [],
             children: []
         };
         result.tag = (element.nodeName || element.tagName).toLowerCase();
-        if (element.attributes && element.attributes.length > 0) {
-            each(element.attributes, function (item) {
-                result.props[item.name] = item.value;
+        var onlyNameAttrs = [];
+        Object.keys(element.__location.attrs).forEach(function (name) {
+            var attr = element.__location.attrs[name];
+            if (name.length === attr.endOffset - attr.startOffset) {
+                onlyNameAttrs.push(name);
+            }
+        });
+        if (element.attrs && element.attrs.length > 0) {
+            each(element.attrs, function (attr) {
+                if (onlyNameAttrs.indexOf(attr.name) === -1) {
+                    result.props.push({
+                        name: attr.name,
+                        value: attr.value
+                    });
+                } else {
+                    result.props.push({
+                        name: attr.name,
+                        onlyName: true
+                    });
+                }
             });
         }
         if (element.childNodes && element.childNodes.length > 0) {
@@ -148,9 +165,12 @@ var elementToObject = function elementToObject(element) {
 };
 
 var toObject = function toObject(wxmlContent) {
-    var result = [];
-    var dom = new JSDOM(wxmlContent);
-    each(dom.window.document.body.children, function (item) {
+    var result = [],
+        dom = p5.parse(wxmlContent, {
+        locationInfo: true
+    }),
+        body = dom.childNodes[0].childNodes[1];
+    each(body.childNodes, function (item) {
         result.push(elementToObject(item));
     });
     return result;
@@ -171,7 +191,7 @@ var defaultTransformOptions = {
         button: 'button',
         'checkbox-group': 'div',
         checkbox: function checkbox(element, helper) {
-            return "<input type=\"checkbox\"" + helper.propsStringify(element.props) + " />" + (element.children && element.children.length > 0 ? "" + helper.childrenStringify(element.children) : '');
+            return '<input type="checkbox"' + helper.propsStringify(element.props) + ' />' + (element.children && element.children.length > 0 ? '' + helper.childrenStringify(element.children) : '');
         },
         form: 'form',
         input: 'input',
@@ -179,11 +199,11 @@ var defaultTransformOptions = {
         picker: 'div',
         'picker-view': 'div',
         radio: function radio(element, helper) {
-            return "<input type=\"radio\"" + helper.propsStringify(element.props) + " />" + (element.children && element.children.length > 0 ? "" + helper.childrenStringify(element.children) : '');
+            return '<input type="radio"' + helper.propsStringify(element.props) + ' />' + (element.children && element.children.length > 0 ? '' + helper.childrenStringify(element.children) : '');
         },
         slider: 'div',
         switch: function _switch(element, helper) {
-            return "<input type=\"checkbox\"" + helper.propsStringify(element.props) + " />" + (element.children && element.children.length > 0 ? "" + helper.childrenStringify(element.children) : '');
+            return '<input type="checkbox"' + helper.propsStringify(element.props) + ' />' + (element.children && element.children.length > 0 ? '' + helper.childrenStringify(element.children) : '');
         },
         textarea: 'textarea',
         audio: 'object',
@@ -202,8 +222,12 @@ var defaultTransformOptions = {
  */
 var propsStringify = function propsStringify(props) {
     var html = "";
-    each(props, function (value, prop) {
-        html += ' ' + prop + '="' + value + '"';
+    each(props, function (prop) {
+        if (prop.onlyName) {
+            html += ' ' + prop.name;
+        } else {
+            html += ' ' + prop.name + '="' + prop.value + '"';
+        }
     });
     return html;
 };
@@ -248,6 +272,7 @@ var toHtml = (function (wxmlContent, options) {
     options = extend(true, {}, defaultTransformOptions, options);
     var html = "",
         wxmlObject = toObject(wxmlContent);
+    console.log(JSON.stringify(wxmlObject));
     each(wxmlObject, function (item) {
         html += elementStringify(item, options);
     });
