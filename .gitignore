@@ -1,6 +1,10 @@
 1.wxml
 1.result.html
 
+# package lock file
+yarn.lock
+package-lock.json
+
 # Logs
 logs
 *.log

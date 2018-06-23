@@ -9,11 +9,16 @@ describe('test wxml-transformer', function () {
     });
     describe('toHtml', function () {
         it('view => div', function () {
+            var html = transformer.toHtml('<view>{{123}}</view>');
+            assert.isTrue(html == '<div>{{123}}</div>', `toHtml转换有问题，转换结果=${html}`);
+        });
+
+        it('view(id) => div(id)', function () {
             var html = transformer.toHtml('<view id="box">{{123}}</view>');
             assert.isTrue(html == '<div id="box">{{123}}</div>', `toHtml转换有问题，转换结果=${html}`);
         });
 
-        it('view（hidden） => div', function () {
+        it('view(id, hidden) => div(id, hidden)', function () {
             var html = transformer.toHtml('<view id="box" hidden>{{123}}</view>');
             assert.isTrue(html == '<div id="box" hidden>{{123}}</div>', `toHtml转换有问题，转换结果=${html}`);
         });

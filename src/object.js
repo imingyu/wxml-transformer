@@ -17,13 +17,13 @@ var elementToObject = (element) => {
         };
         result.tag = (element.nodeName || element.tagName).toLowerCase();
         var onlyNameAttrs = [];
-        Object.keys(element.__location.attrs).forEach(name => {
-            var attr = element.__location.attrs[name];
-            if (name.length === attr.endOffset - attr.startOffset) {
-                onlyNameAttrs.push(name);
-            }
-        });
         if (element.attrs && element.attrs.length > 0) {
+            Object.keys(element.__location.attrs).forEach(name => {
+                var attr = element.__location.attrs[name];
+                if (name.length === attr.endOffset - attr.startOffset) {
+                    onlyNameAttrs.push(name);
+                }
+            });
             each(element.attrs, attr => {
                 if (onlyNameAttrs.indexOf(attr.name) === -1) {
                     result.props.push({
