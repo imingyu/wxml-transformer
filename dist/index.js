@@ -32,10 +32,6 @@ var extend = function extend() {
         deep = false,
         toString = Object.prototype.toString,
         hasOwn = Object.prototype.hasOwnProperty,
-        push = Array.prototype.push,
-        slice = Array.prototype.slice,
-        trim = String.prototype.trim,
-        indexOf = Array.prototype.indexOf,
         class2type = {
         "[object Boolean]": "boolean",
         "[object Number]": "number",
@@ -134,13 +130,13 @@ var elementToObject = function elementToObject(element) {
         };
         result.tag = (element.nodeName || element.tagName).toLowerCase();
         var onlyNameAttrs = [];
-        Object.keys(element.__location.attrs).forEach(function (name) {
-            var attr = element.__location.attrs[name];
-            if (name.length === attr.endOffset - attr.startOffset) {
-                onlyNameAttrs.push(name);
-            }
-        });
         if (element.attrs && element.attrs.length > 0) {
+            Object.keys(element.__location.attrs).forEach(function (name) {
+                var attr = element.__location.attrs[name];
+                if (name.length === attr.endOffset - attr.startOffset) {
+                    onlyNameAttrs.push(name);
+                }
+            });
             each(element.attrs, function (attr) {
                 if (onlyNameAttrs.indexOf(attr.name) === -1) {
                     result.props.push({
@@ -220,6 +216,7 @@ var defaultTransformOptions = {
  * @author imingyu<mingyuhisoft@163.com>
  * @date 2017-6-27
  */
+
 var propsStringify = function propsStringify(props) {
     var html = "";
     each(props, function (prop) {

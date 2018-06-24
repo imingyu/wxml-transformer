@@ -43,6 +43,9 @@ transformer.toObject('<view id="box" hidden>{{123}}</view>');
 
 ## 更新日志
 
+## v0.1.3
+- fix:[issue#1](https://github.com/imingyu/wxml-transformer/issues/1)
+
 ## v0.1.2
 - `toObject`方法转换后的结果中`props`不在是一个`object`，而是一个`Array`，结构为：`[{name:String, value:String, onlyName:Boolean}]`;
 - `toObject`支持将无属性值的属性添加特殊标记，以供后续程序使用，特殊标记为`onlyName`，是个`Boolean`值;
